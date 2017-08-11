@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var HaulierBookingSchema = new Schema({
+    bookingId: String,
     trackingNumber: String,
     supplierID: String,
     origin: String,

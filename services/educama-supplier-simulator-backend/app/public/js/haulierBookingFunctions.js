@@ -1,52 +1,52 @@
-function confirmHaulierBooking(id){
+function confirmHaulierBooking(id) {
 
     $.ajax({
-        type: "PUT",
-        url: "/api/cargos/"+id,
-        contentType:'application/json',
-        success: function(result) {
+        type: "POST",
+        url: "/api/haulierbooking/" + id + "/confirm",
+        contentType: 'application/json',
+        success: function (result) {
             location.reload();
         }
     });
-    
+
 }
 
-function declineHaulierBooking(id){
+function declineHaulierBooking(id) {
 
     $.ajax({
-        type: "DELETE",
-        url: "/api/cargos/"+id,
-        contentType:'application/json',
-        success: function(result) {
+        type: "POST",
+        url: "/api/haulierbooking/" + id + "/reject",
+        contentType: 'application/json',
+        success: function (result) {
             location.reload();
         }
     });
-    
+
 }
 
-function pickedUpCargo(id){
+function pickedUpCargo(id) {
 
     $.ajax({
-        type: "PUT",
-        url: "/api/cargos/"+id+"/pickedup",
-        contentType:'application/json',
-        success: function(result) {
+        type: "POST",
+        url: "/api/haulierbooking/" + id + "/pickedup",
+        contentType: 'application/json',
+        success: function (result) {
             location.reload();
         }
     });
-    
+
 }
 
-function deliveredCargo(id){
+function deliveredCargo(id) {
 
     $.ajax({
-        type: "PUT",
-        url: "/api/cargos/"+id+"/delivered",
-        contentType:'application/json',
-        success: function(result) {
+        type: "POST",
+        url: "/api/haulierbooking/" + id + "/delivered",
+        contentType: 'application/json',
+        success: function (result) {
             location.reload();
         }
     });
-    
+
 }
 

@@ -20,7 +20,7 @@ import { CargoFormService } from './cargo-form.service';
     FormsModule,
     HttpModule
   ],
-  providers: [ 
+  providers: [
     FlightFormService,
     CargoFormService
   ],

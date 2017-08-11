@@ -2,8 +2,8 @@
 
 // BASE SETUP
 // =============================================================================
-var express    = require('express');        // Call express
-var app        = express();                 // Define our app using express
+var express = require('express');        // Call express
+var app = express();                 // Define our app using express
 var Promise = require('bluebird');
 
 var config = require('./app/config');
@@ -13,17 +13,17 @@ config(app);
 routes(app);
 
 // MongoDB -- ScaleGrid
-var mongoose   = require('mongoose');
+var mongoose = require('mongoose');
 Promise.promisifyAll(mongoose);
 var fs = require('fs');
 
 var certFileBuf = fs.readFileSync("cert.csr");
 var mongoDbOptions = {
-   server: { sslCA: certFileBuf }
+    server: { sslCA: certFileBuf }
 };
 
-mongoose.connect(app.get('mongoURL'), mongoDbOptions, function(err, db) {
-    if(err){
+mongoose.connect(app.get('mongoURL'), mongoDbOptions, function (err, db) {
+    if (err) {
         return console.dir(err);
     }
 });
@@ -36,7 +36,7 @@ app.use('/api', require('./app/api'));
 
 // START THE SERVER
 // =============================================================================
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function () {
     console.log('Express server listening on ' + app.get('port'));
 });
 

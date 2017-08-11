@@ -2,8 +2,14 @@
     <h1>Airline booking</h1>
     <form (ngSubmit)="onSubmit()" #flightForm="ngForm">
         <div class="form-group">
+            <label for="bookingId">Booking Id</label>
+            <input type="text" class="form-control" id="bookingId" required [(ngModel)]="model.bookingId" name="bookingId" #id="ngModel">
+            <div [hidden]="id.valid || id.pristine" class="alert alert-danger">bookingId is required</div>
+        </div>
+        <div class="form-group">
             <label for="trackingNumber">Tracking number</label>
-            <input type="text" class="form-control" id="trackingNumber" required [(ngModel)]="model.trackingNumber" name="trackingNumber" #id="ngModel">
+            <input type="text" class="form-control" id="trackingNumber" required [(ngModel)]="model.trackingNumber" name="trackingNumber"
+                #id="ngModel">
             <div [hidden]="id.valid || id.pristine" class="alert alert-danger">Tracking number is required</div>
         </div>
         <div class="form-group">

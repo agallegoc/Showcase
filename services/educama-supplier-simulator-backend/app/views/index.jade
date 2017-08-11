@@ -30,6 +30,7 @@ html
                                 tr
                                     td  Airline Booking
                                     td  
+                                        div Booking Id: #{airlineBooking.bookingId}
                                         div Tracking number: #{airlineBooking.trackingNumber}
                                         div Airline: #{airlineBooking.airline}
                                         div Flight Number: #{airlineBooking.flightNumber}
@@ -38,13 +39,14 @@ html
                                     td  Requested
                                     td  
                                         div
-                                            input(type='button', class="btn btn-success" value='Confirm', onclick='confirmAirlineBooking(\"#{airlineBooking._id}\")')
+                                            input(type='button', class="btn btn-success" value='Confirm', onclick='confirmAirlineBooking(\"#{airlineBooking.bookingId}\")')
                                         div 
-                                            input(type='button', class="btn btn-danger" value='Decline', onclick='declineAirlineBooking(\"#{airlineBooking._id}\")')                      
+                                            input(type='button', class="btn btn-danger" value='Decline', onclick='declineAirlineBooking(\"#{airlineBooking.bookingId}\")')                      
                             else if (airlineBooking.status === "Declined")
                                 tr
                                     td  Airline Booking
                                     td  
+                                        div Booking Id: #{airlineBooking.bookingId}
                                         div Tracking number: #{airlineBooking.trackingNumber}
                                         div Airline: #{airlineBooking.airline}
                                     td  Declined
@@ -53,16 +55,18 @@ html
                                 tr
                                     td  Airline Booking
                                     td  
+                                        div Booking Id: #{airlineBooking.bookingId}
                                         div Tracking number: #{airlineBooking.trackingNumber}
                                         div Airline: #{airlineBooking.airline}
                                     td  Confirmed
                                     td  
                                         div
-                                            input(type='button', class="btn btn-success" value='Departed', onclick='departedFlight(\"#{airlineBooking._id}\")')
+                                            input(type='button', class="btn btn-success" value='Departed', onclick='departedFlight(\"#{airlineBooking.bookingId}\")')
                             else if (airlineBooking.status === "Departed")
                                 tr
                                     td  Airline Booking
                                     td  
+                                        div Booking Id: #{airlineBooking.bookingId}
                                         div Airline: #{airlineBooking.airline}
                                         div Flight Number: #{airlineBooking.flightNumber}
                                         div Airport: #{airlineBooking.origin}
@@ -70,11 +74,12 @@ html
                                     td  Departed
                                     td  
                                         div
-                                            input(type='button', class="btn btn-success" value='Arrived', onclick='arrivedFlight(\"#{airlineBooking._id}\")')
+                                            input(type='button', class="btn btn-success" value='Arrived', onclick='arrivedFlight(\"#{airlineBooking.bookingId}\")')
                             else if (airlineBooking.status === "Arrived")
                                 tr
                                     td  Airline Booking
                                     td  
+                                        div Booking Id: #{airlineBooking.bookingId}
                                         div Airline: #{airlineBooking.airline}
                                         div Flight Number: #{airlineBooking.flightNumber}
                                         div Airport: #{airlineBooking.destination}
@@ -87,6 +92,7 @@ html
                                 tr
                                     td  Haulier Booking
                                     td  
+                                        div Booking Id: #{haulierBooking.bookingId}
                                         div Tracking number: #{haulierBooking.trackingNumber}
                                         div Supplier ID: #{haulierBooking.supplierID}
                                         div Origin: #{haulierBooking.origin}
@@ -94,13 +100,14 @@ html
                                     td  Requested
                                     td  
                                             div
-                                                input(type='button', class="btn btn-success" value='Confirm', onclick='confirmHaulierBooking(\"#{haulierBooking._id}\")')
+                                                input(type='button', class="btn btn-success" value='Confirm', onclick='confirmHaulierBooking(\"#{haulierBooking.bookingId}\")')
                                             div 
-                                                input(type='button', class="btn btn-danger" value='Decline', onclick='declineHaulierBooking(\"#{haulierBooking._id}\")')
+                                                input(type='button', class="btn btn-danger" value='Decline', onclick='declineHaulierBooking(\"#{haulierBooking.bookingId}\")')
                             else if (haulierBooking.status === "Declined")
                                 tr
                                     td  Haulier Booking
                                     td  
+                                        div Booking Id: #{haulierBooking.bookingId}
                                         div Tracking number: #{haulierBooking.trackingNumber}
                                         div Supplier ID: #{haulierBooking.supplierID}
                                     td  Declined
@@ -109,16 +116,18 @@ html
                                 tr
                                     td  Haulier Booking
                                     td  
+                                        div Booking Id: #{haulierBooking.bookingId}
                                         div Tracking number: #{haulierBooking.trackingNumber}
                                         div Supplier ID: #{haulierBooking.supplierID}
                                     td  Confirmed
                                     td  
                                         div
-                                            input(type='button', class="btn btn-success" value='Picked Up', onclick='pickedUpCargo(\"#{haulierBooking._id}\")')
+                                            input(type='button', class="btn btn-success" value='Picked Up', onclick='pickedUpCargo(\"#{haulierBooking.bookingId}\")')
                             else if (haulierBooking.status === "PickedUp")
                                 tr
                                     td  Haulier Booking
                                     td  
+                                        div Booking Id: #{haulierBooking.bookingId}
                                         div Tracking Number: #{haulierBooking.trackingNumber}
                                         div Supplier ID: #{haulierBooking.supplierID}
                                         div Address: #{haulierBooking.origin}
@@ -126,11 +135,12 @@ html
                                     td  Picked Up
                                     td  
                                         div
-                                            input(type='button', class="btn btn-success" value='Delivered', onclick='deliveredCargo(\"#{haulierBooking._id}\")')
+                                            input(type='button', class="btn btn-success" value='Delivered', onclick='deliveredCargo(\"#{haulierBooking.bookingId}\")')
                             else if (haulierBooking.status === "Delivered")
                                 tr
                                     td  Haulier Booking
                                     td  
+                                        div Booking Id: #{haulierBooking.bookingId}
                                         div Tracking Number: #{haulierBooking.trackingNumber}
                                         div Supplier ID: #{haulierBooking.supplierId}
                                         div Address: #{haulierBooking.destination}
