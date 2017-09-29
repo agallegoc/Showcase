@@ -28,6 +28,10 @@ mongoose.connect(app.get('mongoURL'), mongoDbOptions, function (err, db) {
     }
 });
 
+// Connect to RabbitMq to receive messages.
+var receiver = require('./app/receiver');
+receiver(app);
+
 
 // REGISTER OUR ROUTES FOR OUR API
 // =============================================================================

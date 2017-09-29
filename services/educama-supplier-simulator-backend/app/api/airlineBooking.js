@@ -1,10 +1,9 @@
 var express = require('express');        // Call express
 var router = express.Router();              // get an instance of the express Router
-var amqp = require('amqplib/callback_api'); // AMQP -- RabbitMQ
 
 // Models
 var AirlineBooking = require('../models/airlineBooking');
-var message = require('../models/message');
+var messageSender = require('../functions/queue_message_sender');
 
 router.route('/')
 
@@ -44,19 +43,8 @@ router.route('/')
                             console.log('AirlineBooking Sucessfully created %s.', flight.bookingId);
                             res.status(201);
                             res.json(flight);
-
-                            // Connect to RabbitMQ server
-                            amqp.connect(req.app.get('amqpURL'), function (err, conn) {
-                                // Create a channel
-                                conn.createChannel(function (err, ch) {
-                                    var bookingResponseQueue = 'bookingResponseQueue';
-                                    var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
-
-                                    // Declare a queue for us to send to; then we can publish a message to the queue
-                                    ch.assertQueue(bookingResponseQueue, { durable: false });
-                                    ch.sendToQueue(bookingResponseQueue, new Buffer(msg));
-                                });
-                            });
+                            // sent message to the queue
+                            messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                         }
                     });
                 }
@@ -121,19 +109,8 @@ router.route('/:booking_id/confirm')
                             res.json(flight);
                         }
                     });
-                    // Connect to RabbitMQ server
-                    amqp.connect(req.app.get('amqpURL'), function (err, conn) {
-                        // Create a channel
-                        conn.createChannel(function (err, ch) {
-                            var bookingResponseQueue = 'bookingResponseQueue';
-                            var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
-
-                            // Declare a queue for us to send to; then we can publish a message to the queue
-                            ch.assertQueue(bookingResponseQueue, { durable: false });
-                            ch.sendToQueue(bookingResponseQueue, new Buffer(msg));
-                        });
-
-                    });
+                    // sent message to the queue
+                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -165,19 +142,8 @@ router.route('/:booking_id/reject')
                             res.json(flight);
                         }
                     });
-                    // Connect to RabbitMQ server
-                    amqp.connect(req.app.get('amqpURL'), function (err, conn) {
-                        // Create a channel
-                        conn.createChannel(function (err, ch) {
-                            var bookingResponseQueue = 'bookingResponseQueue';
-                            var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
-
-                            // Declare a queue for us to send to; then we can publish a message to the queue
-                            ch.assertQueue(bookingResponseQueue, { durable: false });
-                            ch.sendToQueue(bookingResponseQueue, new Buffer(msg));
-                        });
-
-                    });
+                    // sent message to the queue
+                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -210,19 +176,8 @@ router.route('/:booking_id/departed')
                             res.json(flight);
                         }
                     });
-                    // Connect to RabbitMQ server
-                    amqp.connect(req.app.get('amqpURL'), function (err, conn) {
-                        // Create a channel
-                        conn.createChannel(function (err, ch) {
-                            var bookingResponseQueue = 'bookingResponseQueue';
-                            var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
-
-                            // Declare a queue for us to send to; then we can publish a message to the queue
-                            ch.assertQueue(bookingResponseQueue, { durable: false });
-                            ch.sendToQueue(bookingResponseQueue, new Buffer(msg));
-                        });
-
-                    });
+                    // sent message to the queue
+                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -256,19 +211,8 @@ router.route('/:booking_id/arrived')
                             res.json(flight);
                         }
                     });
-                    // Connect to RabbitMQ server
-                    amqp.connect(req.app.get('amqpURL'), function (err, conn) {
-                        // Create a channel
-                        conn.createChannel(function (err, ch) {
-                            var bookingResponseQueue = 'bookingResponseQueue';
-                            var msg = JSON.stringify(message.getMessageFromAirlineBooking(flight));
-
-                            // Declare a queue for us to send to; then we can publish a message to the queue
-                            ch.assertQueue(bookingResponseQueue, { durable: false });
-                            ch.sendToQueue(bookingResponseQueue, new Buffer(msg));
-                        });
-
-                    });
+                    // sent message to the queue
+                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);

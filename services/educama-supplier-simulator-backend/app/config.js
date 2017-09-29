@@ -39,7 +39,7 @@ module.exports = function (app) {
     var appURL = appEnv.url;
 
     if (appEnv.isLocal) {
-        appURL = "http://localhost:8080";
+        appURL = "http://localhost:" + app.get('port');
     }
    
     app.set('appURL', appURL);
