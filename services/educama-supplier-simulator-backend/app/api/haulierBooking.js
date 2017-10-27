@@ -4,6 +4,7 @@ var router = express.Router();              // get an instance of the express Ro
 // Models
 var HaulierBooking = require('../models/haulierBooking');
 var messageSender = require('../functions/queue_message_sender');
+var dtoBuilder = require('../functions/dto_transformer');
 
 router.route('/')
 
@@ -41,7 +42,7 @@ router.route('/')
                         } else {
                             console.log('HaulierBooking Sucessfully created %s.', cargo.bookingId);
                             res.status(201);
-                            res.json(cargo);
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
                             // sent message to the queue
                             messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
@@ -53,11 +54,15 @@ router.route('/')
 
     // Get all the haulier booking events (accessed at GET http://localhost:8080/api/haulierbooking)
     .get(function (req, res) {
-        HaulierBooking.find(function (err, cargo) {
+        HaulierBooking.find(function (err, cargos) {
             if (err) {
                 res.send(err);
             } else {
-                res.json(cargo);
+                var cargosDto = new Array();
+                cargos.forEach(function (cargo, index) {
+                    cargosDto.push(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                });
+                res.json(cargosDto);
             }
         });
     });
@@ -75,7 +80,9 @@ router.route('/:booking_id')
                 if (cargo) {
                     console.log("Haulier Booking with bookingId %s found", req.params.booking_id);
                     res.status(200);
-                    res.json(cargo);
+                    var result = dtoBuilder.getDtoFromHaulierBooking(req.app, cargo);
+                    res.status(200);
+                    res.json(result);
                 } else {
                     console.log('Error: HaulierBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -104,11 +111,11 @@ router.route('/:booking_id/confirm')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to Confirmed status", req.params.booking_id);
                             res.status(200);
-                            res.json(cargo);
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            // sent message to the queue
+                            messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
                     });
-                    // sent message to the queue
-                    messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                 } else {
                     console.log('Error: HaulierBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -137,11 +144,11 @@ router.route('/:booking_id/reject')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to Declined status", req.params.booking_id);
                             res.status(200);
-                            res.json(cargo);
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            // sent message to the queue
+                            messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
                     });
-                    // sent message to the queue
-                    messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                 } else {
                     console.log('Error: HaulierBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -171,11 +178,11 @@ router.route('/:booking_id/pickedup')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to PickedUp status", req.params.booking_id);
                             res.status(200);
-                            res.json(cargo);
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            // sent message to the queue
+                            messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
                     });
-                    // sent message to the queue
-                    messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                 } else {
                     console.log('Error: HaulierBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -189,7 +196,7 @@ router.route('/:booking_id/delivered')
 
     // Update the haulier booking event given the ID (accessed at POST http://localhost:8080/api/haulierbooking/:booking_id/arrived)
     .post(function (req, res) {
-        HaulierBooking.findOne({ 'trackingNumber': req.params.booking_id }, function (err, cargo) {
+        HaulierBooking.findOne({ 'bookingId': req.params.booking_id }, function (err, cargo) {
             if (err) {
                 console.log(err);
                 res.status(500);
@@ -206,11 +213,11 @@ router.route('/:booking_id/delivered')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to Delivered status", req.params.booking_id);
                             res.status(200);
-                            res.json(cargo);
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            // sent message to the queue
+                            messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
-                    });
-                    // sent message to the queue
-                    messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
+                    });                    
                 } else {
                     console.log('Error: HaulierBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);

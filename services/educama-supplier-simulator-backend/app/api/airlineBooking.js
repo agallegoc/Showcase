@@ -4,6 +4,7 @@ var router = express.Router();              // get an instance of the express Ro
 // Models
 var AirlineBooking = require('../models/airlineBooking');
 var messageSender = require('../functions/queue_message_sender');
+var dtoBuilder = require('../functions/dto_transformer');
 
 router.route('/')
 
@@ -42,7 +43,7 @@ router.route('/')
                         } else {
                             console.log('AirlineBooking Sucessfully created %s.', flight.bookingId);
                             res.status(201);
-                            res.json(flight);
+                            res.json(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
                             // sent message to the queue
                             messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                         }
@@ -54,12 +55,16 @@ router.route('/')
 
     // Get all the airline booking events (accessed at GET http://localhost:8080/api/airlinebooking)
     .get(function (req, res) {
-        AirlineBooking.find(function (err, flight) {
+        AirlineBooking.find(function (err, flights) {
             if (err) {
                 console.log(err);
                 res.send(err);
             } else {
-                res.json(flight);
+                var flightsDto = new Array();
+                flights.forEach(function (flight, index) {
+                    flightsDto.push(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
+                });
+                res.json(flightsDto);
             }
         });
     });
@@ -77,7 +82,7 @@ router.route('/:booking_id')
                 if (flight) {
                     console.log("AirlineBooking with bookingIdr %s found", req.params.booking_id);
                     res.status(200);
-                    res.json(flight);
+                    res.json(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -106,11 +111,11 @@ router.route('/:booking_id/confirm')
                         } else {
                             console.log("AirlineBooking with bookingId %s updated to Confirmed status", req.params.booking_id);
                             res.status(200);
-                            res.json(flight);
+                            res.json(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
+                            // sent message to the queue
+                            messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                         }
                     });
-                    // sent message to the queue
-                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -139,11 +144,11 @@ router.route('/:booking_id/reject')
                         } else {
                             console.log("AirlineBooking with bookingId %s updated to Declined status", req.params.booking_id);
                             res.status(200);
-                            res.json(flight);
+                            res.json(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
+                            // sent message to the queue
+                            messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                         }
                     });
-                    // sent message to the queue
-                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -173,11 +178,11 @@ router.route('/:booking_id/departed')
                         } else {
                             console.log("AirlineBooking with bookingId %s updated to Departed status", req.params.booking_id);
                             res.status(200);
-                            res.json(flight);
+                            res.json(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
+                            // sent message to the queue
+                            messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                         }
                     });
-                    // sent message to the queue
-                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
@@ -208,11 +213,11 @@ router.route('/:booking_id/arrived')
                         } else {
                             console.log("AirlineBooking with bookingId %s updated to Arrived status", req.params.booking_id);
                             res.status(200);
-                            res.json(flight);
+                            res.json(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
+                            // sent message to the queue
+                            messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                         }
                     });
-                    // sent message to the queue
-                    messageSender.sentAirlineBookingtMessageToQueue(req.app, flight);
                 } else {
                     console.log('Error: AirlineBooking with bookingId: %s not found', req.params.booking_id);
                     res.status(404);
