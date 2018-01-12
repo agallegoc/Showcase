@@ -4,9 +4,9 @@ var LinkDto = require('../dto/link');
 
 var self = module.exports = {
     //Get urls from airlineBooking
-    getUrlsForAirlineBooking: function (app, airlineBooking) {
+    getUrlsForAirlineBooking: function (app, protocol, airlineBooking) {
         var urls = new Map(); 
-        urlBase = app.get('appURL') + '/api/airlineBooking/' + airlineBooking.bookingId;
+        urlBase = getCorrectSchemaUrlBase(app.get('appURL'), protocol) + '/api/airlineBooking/' + airlineBooking.bookingId;
         urls.set("self", getUrlData("GET", urlBase));
 
         if (airlineBooking.status == "Requested") {
@@ -21,9 +21,9 @@ var self = module.exports = {
     },
 
     //Get url from haulierBooking
-    getUrlsForHaulierBooking: function (app, haulierBooking) {
+    getUrlsForHaulierBooking: function (app, protocol, haulierBooking) {
         var urls = new Map(); 
-        urlBase = app.get('appURL') + '/api/haulierbooking/' + haulierBooking.bookingId;
+        urlBase = getCorrectSchemaUrlBase(app.get('appURL'), protocol) + '/api/haulierbooking/' + haulierBooking.bookingId;
         urls.set("self", getUrlData("GET", urlBase));
 
         if (haulierBooking.status == "Requested") {
@@ -46,6 +46,18 @@ function getUrlData(method, url) {
     linkData.method = method;
     linkData.href = url;
     return linkData;
+}
+
+/**
+ * Get the correct url Schema
+ */
+function getCorrectSchemaUrlBase(urlBase, protocol) {
+    if (protocol == 'http' && urlBase.startsWith("https")) {
+        return urlBase.replace("https", "http")
+    } else if (protocol == 'https' && !urlBase.startsWith("https")) {
+        return urlBase.replace("http", "https")
+    }
+    return urlBase;
 }
 
 

@@ -38,6 +38,9 @@ receiver(app);
 
 app.use('/api', require('./app/api'));
 
+// Needed in order to know the original url when behind a proxy.
+app.enable('trust proxy');
+
 // START THE SERVER
 // =============================================================================
 var server = app.listen(app.get('port'), function () {

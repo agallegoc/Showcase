@@ -42,7 +42,7 @@ router.route('/')
                         } else {
                             console.log('HaulierBooking Sucessfully created %s.', cargo.bookingId);
                             res.status(201);
-                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo));
                             // sent message to the queue
                             messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
@@ -60,7 +60,7 @@ router.route('/')
             } else {
                 var cargosDto = new Array();
                 cargos.forEach(function (cargo, index) {
-                    cargosDto.push(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                    cargosDto.push(dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo));
                 });
                 res.json(cargosDto);
             }
@@ -80,7 +80,7 @@ router.route('/:booking_id')
                 if (cargo) {
                     console.log("Haulier Booking with bookingId %s found", req.params.booking_id);
                     res.status(200);
-                    var result = dtoBuilder.getDtoFromHaulierBooking(req.app, cargo);
+                    var result = dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo);
                     res.status(200);
                     res.json(result);
                 } else {
@@ -111,7 +111,7 @@ router.route('/:booking_id/confirm')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to Confirmed status", req.params.booking_id);
                             res.status(200);
-                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo));
                             // sent message to the queue
                             messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
@@ -144,7 +144,7 @@ router.route('/:booking_id/reject')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to Declined status", req.params.booking_id);
                             res.status(200);
-                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo));
                             // sent message to the queue
                             messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
@@ -178,7 +178,7 @@ router.route('/:booking_id/pickedup')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to PickedUp status", req.params.booking_id);
                             res.status(200);
-                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo));
                             // sent message to the queue
                             messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }
@@ -213,7 +213,7 @@ router.route('/:booking_id/delivered')
                         } else {
                             console.log("Haulier Booking with bookingId %s updated to Delivered status", req.params.booking_id);
                             res.status(200);
-                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                            res.json(dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo));
                             // sent message to the queue
                             messageSender.sentHaulierBookingMessageToQueue(req.app, cargo);
                         }

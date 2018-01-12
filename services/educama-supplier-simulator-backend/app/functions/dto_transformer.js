@@ -6,7 +6,7 @@ var urlBuilder = require('../functions/build_reponse_url');
 
 var self = module.exports = {
     //Get message from airlineBooking
-    getDtoFromAirlineBooking: function (app, airlineBooking) {
+    getDtoFromAirlineBooking: function (app, protocol, airlineBooking) {
         var dto = new AirlineBookingDtoObject.AirlineBookingDto();
         dto.bookingId = airlineBooking.bookingId;
         dto.trackingNumber = airlineBooking.trackingNumber;
@@ -17,12 +17,12 @@ var self = module.exports = {
         dto.departedTime = airlineBooking.departedTime;
         dto.arrivedTime = airlineBooking.arrivedTime;
         dto.status = airlineBooking.status;
-        dto._links = Array.from(urlBuilder.getUrlsForAirlineBooking(app, airlineBooking));
+        dto._links = Array.from(urlBuilder.getUrlsForAirlineBooking(app, protocol, airlineBooking));
         return dto;
     },
 
     //Get message from haulierBooking
-    getDtoFromHaulierBooking: function (app, haulierBooking) {
+    getDtoFromHaulierBooking: function (app, protocol, haulierBooking) {
         var dto = new HaulierBookingDtoObject.HaulierBookingDto();
         dto.bookingId = haulierBooking.bookingId;
         dto.trackingNumber = haulierBooking.trackingNumber;
@@ -32,7 +32,7 @@ var self = module.exports = {
         dto.pickedUpTime = haulierBooking.pickedUpTime;
         dto.deliveredTime = haulierBooking.deliveredTime;
         dto.status = haulierBooking.status;
-        dto._links = Array.from(urlBuilder.getUrlsForHaulierBooking(app, haulierBooking));
+        dto._links = Array.from(urlBuilder.getUrlsForHaulierBooking(app, protocol, haulierBooking));
         return dto;
     }
 }

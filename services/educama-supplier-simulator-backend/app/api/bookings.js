@@ -20,12 +20,12 @@ router.route('/')
                 var haulierBookings = new Array();
                 results.airlineBookingEvents.forEach(function (flight, index) {
                     if (flight != undefined) {
-                        airlineBookings.push(dtoBuilder.getDtoFromAirlineBooking(req.app, flight));
+                        airlineBookings.push(dtoBuilder.getDtoFromAirlineBooking(req.app, req.protocol, flight));
                     }
                 });                
                 results.haulierBookingEvents.forEach(function (cargo, index) {
                     if (cargo != undefined) {
-                        haulierBookings.push(dtoBuilder.getDtoFromHaulierBooking(req.app, cargo));
+                        haulierBookings.push(dtoBuilder.getDtoFromHaulierBooking(req.app, req.protocol, cargo));
                     }
                 });
                 results.airlineBookingEvents = airlineBookings;
